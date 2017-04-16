@@ -13839,9 +13839,9 @@ SUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> From the graphs, Looks like correlation between features 'Grocery', 'Detergents_Paper' and 'Grocery', 'Milk'.</p>
+<p><strong>Answer:</strong> From the graphs, Looks like correlation between features 'Grocery', 'Detergents_Paper' and 'Grocery', 'Milk'. Based on this plot, it does confirm the suspicion (based on R^2 score also), that Grocery may not be a relevant feature.</p>
 <p>By looking at all the scatter plot, looks like the most of the data points are concentrated toward the lower values. This could be because we have few outliers in the data, that might make the plots not showing the true characteristic of the data.</p>
-<p>The data looks like it is positively skewed. The data closely resemebles log normal kind of distribution</p>
+<p>The data looks like it is positively skewed. The data closely resemebles log normal kind of distribution.</p>
 
 </div>
 </div>
@@ -17415,7 +17415,7 @@ Once you have performed this implementation, the dataset will be stored in the v
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">outliers_all</span> <span class="o">=</span> <span class="p">[]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">outliers_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
 
 <span class="c1"># For each feature find the data points with extreme high or low values</span>
 <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">log_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -17430,7 +17430,7 @@ Once you have performed this implementation, the dataset will be stored in the v
     <span class="n">step</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span><span class="p">)</span>
     
     <span class="n">outlier_pts</span> <span class="o">=</span> <span class="n">log_data</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">log_data</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="n">step</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">log_data</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="n">step</span><span class="p">))]</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outliers_all</span><span class="p">,</span> <span class="n">outlier_pts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">))</span>
+    <span class="n">outliers_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outliers_all</span><span class="p">,</span> <span class="n">outlier_pts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     
     <span class="c1"># Display the outliers</span>
     <span class="k">print</span> <span class="s2">&quot;Data points considered outliers for the feature &#39;{}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
@@ -17439,6 +17439,12 @@ Once you have performed this implementation, the dataset will be stored in the v
     
 <span class="c1"># OPTIONAL: Select the indices for data points you wish to remove</span>
 <span class="n">outliers</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Print outliers that appear more than twice</span>
+<span class="n">outliers_all</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">outliers_all</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Outliers index that appear multiple times&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">outliers_all</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">])</span>
+
 
 <span class="c1"># Remove the outliers, if any were specified</span>
 <span class="n">good_data</span> <span class="o">=</span> <span class="n">log_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">log_data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">outliers</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
@@ -18070,6 +18076,14 @@ Once you have performed this implementation, the dataset will be stored in the v
 
 </div>
 
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Outliers index that appear multiple times
+[  65.   66.   75.  128.  154.]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -18090,6 +18104,8 @@ Once you have performed this implementation, the dataset will be stored in the v
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong> Yes, there are points considered as outliers for more than one feature. However these data points might still be valid data points and hence decided not to delete these data points from the data set</p>
+<p>The outlier points that appear multiple times are:
+65,   66,   75,  128,  154</p>
 
 </div>
 </div>
@@ -18722,7 +18738,7 @@ The total for the 1st and 2nd PCA is: (0.4424 + 0.2766) = 0.719</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x116d5a9d0&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x116500990&gt;</pre>
 </div>
 
 </div>
@@ -19847,7 +19863,7 @@ Advantages of Kmeans Algorithm:</p>
 <li>K-Means is always certain of the data point belonging to a particular cluster and so it does "hard assignment" of the data points to a cluster. The Gausian Mixture Model does what is called as "Soft assignment", it means it uses probability of the sample to determine the feasibilty of it belonging to a certain cluster. Inescense GMM model captures covariance structure of the data along with the center of latent Gaussian   </li>
 <li>The GMM Model does not bias the cluster to have a specific structure like the K-Means does</li>
 </ol>
-<p>I am not sure how the data is clustering in this case and hence plan to use the KMeans &amp; GMM algorithm and based on the score, plan to choose the best one.</p>
+<p>The Algorithm chosen here is GMM. The reason to choose this model is basically based on my understanding of the data. The data here does not seem to easily seperated into cluster. Since the GMM does "Soft Assignment", looks like a better clustering Algorithm for this particular data set.</p>
 
 </div>
 </div>
@@ -19960,7 +19976,7 @@ Advantages of Kmeans Algorithm:</p>
 
 
 <div class="output_text output_subarea ">
-<pre>&lt;matplotlib.figure.Figure at 0x1178050d0&gt;</pre>
+<pre>&lt;matplotlib.figure.Figure at 0x116c9b250&gt;</pre>
 </div>
 
 </div>
@@ -22318,11 +22334,14 @@ RERERLHDQIiIiIiIiGKHgRAREREREcXO/wfKUH2VNZoqfQAAAABJRU5ErkJggg==
 <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Cluster centers:&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">true_centers</span><span class="p">)</span>
 
+<span class="c1"># Remove outliers from data</span>
+<span class="n">data_without_outliers</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">outliers</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
 <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Data mean values:&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">data_without_outliers</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Difference with mean values:&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">true_centers</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">true_centers</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">data_without_outliers</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
 </pre></div>
 
 </div>
